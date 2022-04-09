@@ -1,6 +1,6 @@
 function FavoriteMeetupsPage() {
     return (
-        <div>Favorite Meetups Page</div>
+        <h1>Favorite Meetups Page</h1>
     )
 }
 
