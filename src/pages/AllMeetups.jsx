@@ -5,40 +5,29 @@ function AllMeetupsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [loadedMeetups, setLoadedMeetups] = useState(true);
 
-    // async function getAllMeetupsCatalog() {
-    //     try {
-    //         const meetupsJSON = await fetch('https://reactjs-course-31123-default-rtdb.firebaseio.com/meetups.json')
-    //         const meetupsList = await meetupsJSON.json()
-    //         setIsLoading(false)
-    //         setLoadedMeetups(meetupsList)
-    //         return meetupsList
-    //     } catch (err) {
-    //         console.error(err)
-    //     }
-    // }
-
     useEffect(() => {
-        setIsLoading(true)
+        async function fetchMeetupsData() {
+            try {
+                setIsLoading(true)
 
-        fetch(
-            'https://reactjs-course-31123-default-rtdb.firebaseio.com/meetups.json'
-        )
-            .then((resp) => {
-                return resp.json()
-            })
-            .then((data) => {
+                const meetupsJSON = await fetch('https://reactjs-course-31123-default-rtdb.firebaseio.com/meetups.json')
+                const meetupsKeyValuePairs = await meetupsJSON.json()
+
                 const meetups = []
-                for (const key in  data) {
+                for (const key in  meetupsKeyValuePairs) {
                     const meetup = {
                         id: key,
-                        ...data[key]
+                        ...meetupsKeyValuePairs[key]
                     }
                     meetups.push(meetup)
                 }
-
                 setIsLoading(false)
                 setLoadedMeetups(meetups)
-            })
+            } catch (err) {
+                console.error(err)
+            }
+        }
+        fetchMeetupsData()
     }, [])
 
     if(isLoading) {
